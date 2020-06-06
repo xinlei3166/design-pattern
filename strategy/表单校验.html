@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<form action="http://xxx.com/register" id="form" method="post">
+  请输入用户名:<input type="text" name="userName"/>
+  请输入密码:<input type="text" name="password"/>
+  请输入手机号码:<input type="text" name="phoneNumber"/>
+  <button>提交</button>
+</form>
+<script src="validator.js"></script>
+<script>
+  var form = document.querySelector('#form')
+  var validatorFunc = function() {
+    var validator = new Validator()
+    validator.add(form.userName, [{ strategy: 'isNonEmpty', errorMsg: '用户名不能为空' }])
+    validator.add(form.password, [{ strategy: 'minLength:6', errorMsg: '密码长度不能少于6位' }])
+    validator.add(form.phoneNumber, [{ strategy: 'isMobile', errorMsg: '手机号格式不正确' }])
+    return validator.start()
+  }
+
+  form.onsubmit = function() {
+    var errorMsg = validatorFunc()
+    if (errorMsg) {
+      alert(errorMsg)
+      return false
+    }
+  }
+</script>
+
+</body>
+</html>

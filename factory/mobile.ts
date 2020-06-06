@@ -4,11 +4,11 @@ import { QualcommHardWare, MiWare } from "./hardware"
 class MobilePhoneFactory {
   // 提供操作系统的接口
   createOS() {
-    throw new Error('抽象方法不可直接调用')
+    throw new Error('abstract method')
   }
   // 提供硬件的接口
   createHandWare() {
-    throw new Error('抽象方法不可直接调用')
+    throw new Error('abstract method')
   }
 }
 
