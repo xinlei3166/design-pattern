@@ -1,4 +1,6 @@
-var Flower = function() {}
+var Flower = function(hasCar = false) {
+  this.hasCar = hasCar
+}
 var xiaoming = {
   sendFlower: function(target) {
     var flower = new Flower()
@@ -7,19 +9,16 @@ var xiaoming = {
 }
 var B = {
   receiveFlower: function(flower) {
-    A.listenGoodMood(function() {
+    if (flower.hasCar) {
       A.receiveFlower(flower)
-    })
+    } else {
+      console.log('一边去')
+    }
   }
 }
 var A = {
   receiveFlower: function(flower) {
     console.log('收到花 ' + flower)
-  },
-  listenGoodMood: function(fn) {
-    setTimeout(function() {
-      fn()
-    }, 3000)
   }
 }
 

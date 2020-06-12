@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>事件代理</title>
+</head>
+<body>
+  <ul class="ul">
+    <li data-id="1">1</li>
+    <li data-id="2">2</li>
+    <li data-id="3">3</li>
+    <li data-id="4">4</li>
+    <li data-id="5">5</li>
+  </ul>
+  <script>
+    var ul = document.querySelector('.ul')
+    ul.onclick = function(e) {
+      if (e.target.tagName === 'LI') {
+        console.log(e.target.innerHTML)
+      }
+    }
+  </script>
+</body>
+</html>
