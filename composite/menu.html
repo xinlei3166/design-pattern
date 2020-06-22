@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>menu</title>
+</head>
+<body>
+  <button id="btn">点我</button>
+  <script src="./menu.js"></script>
+  <script>
+    const setCommand = (function( command ){
+      document.querySelector('#btn').onclick = function(){
+        command.execute();
+      }
+    })(macroCommand);
+  </script>
+</body>
+</html>

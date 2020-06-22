@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>菜单程序</title>
+</head>
+<body>
+  <button id="btn1">按钮1</button>
+  <button id="btn2">按钮2</button>
+  <button id="btn3">按钮3</button>
+  <script src="./menu.js"></script>
+  <script>
+    const btn1 = document.querySelector('#btn1')
+    const btn2 = document.querySelector('#btn2')
+    const btn3 = document.querySelector('#btn3')
+
+    const refreshMenuBarCommand = new RefreshMenuBarCommand( new MenuBar() );
+    const addSubMenuCommand = new AddSubMenuCommand( new SubMenu() );
+    const delSubMenuCommand = new DelSubMenuCommand( new SubMenu() );
+    setCommand( btn1, refreshMenuBarCommand );
+    setCommand( btn2, addSubMenuCommand );
+    setCommand( btn3, delSubMenuCommand );
+  </script>
+</body>
+</html>

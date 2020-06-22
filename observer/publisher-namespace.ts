@@ -1,16 +1,16 @@
-interface IEventBase {
+interface EventBase {
   emit: (key: string, ...args) => void,
   on: (key: string, cb: Function) => void,
-  one: (key: string, cb: Function) => void,
-  remove: (key: string, cb?: Function) => void
+  once: (key: string, cb: Function) => void,
+  off: (key: string, cb?: Function) => void
 }
 
-interface IEvent extends IEventBase {
+interface EventIF extends EventBase {
   namespaceCache: object
   create: (namespace: string) => void
 }
 
-class Event1 implements IEvent {
+class Event1 implements EventIF {
   namespaceCache: object = {}
   private static instance: Event1
 
@@ -39,24 +39,24 @@ class Event1 implements IEvent {
     event.on(key, cb)
   }
 
-  one(key: string, cb: Function) {
+  once(key: string, cb: Function) {
     const event = this.create()
-    event.one(key, cb)
+    event.once(key, cb)
   }
 
-  remove(key: string, cb?: Function) {
+  off(key: string, cb?: Function) {
     const event = this.create()
-    event.remove(key, cb)
+    event.off(key, cb)
   }
 }
 
-class Namespace implements IEventBase {
-  private event: IEvent
+class Namespace implements EventBase {
+  private event: EventIF
   private readonly namespace: string
   private subscribe: object = {}
   private offlineStack: Function[] = []
 
-  constructor(event: IEvent, namespace: string) {
+  constructor(event: EventIF, namespace: string) {
     this.event = event
     this.namespace = namespace
     return this.getInstance()
@@ -80,11 +80,11 @@ class Namespace implements IEventBase {
   _emit(key: string, ...args) {
     const self = this
     const cb = function() {
-      const stack = self.subscribe[key]
-      if (!stack || !stack.length) {
+      const cbs = self.subscribe[key]
+      if (!cbs || !cbs.length) {
         return
       }
-      return self.each(stack, ...args)
+      return self.each(cbs, ...args)
     }
     if (this.offlineStack) {
       return this.offlineStack.push(cb)
@@ -108,16 +108,19 @@ class Namespace implements IEventBase {
     this.subscribe[key].push(cb)
   }
 
-  one(key: string, cb: Function) {
-    this.on(key, cb)
-    this.remove(key)
+  once(key: string, cb: Function) {
+    const wrap = (...args) => {
+      cb(...args)
+      this.off(key, wrap)
+    }
+    this.on(key, wrap)
   }
 
-  remove(key: string, cb?: Function) {
-    this._remove(key, cb)
+  off(key: string, cb?: Function) {
+    this._off(key, cb)
   }
 
-  _remove(key: string, cb?: Function) {
+  _off(key: string, cb?: Function) {
     if (this.subscribe[key]) {
       if (cb) {
         for (let i = this.subscribe[key].length; i >= 0; i--) {
@@ -136,7 +139,7 @@ class Namespace implements IEventBase {
 const event1 = new Event1()
 event1.emit('click', 1, 2)
 event1.on('click', function(a, b) {
-  console.log(a, b) // 输出：1
+  console.log(a, b) // 输出：1, 2
 })
 
 /************** 使用命名空间 ********************/
@@ -148,9 +151,9 @@ namespace1.on('click', function(a) {
 })
 namespace1.emit('click', 1)
 
-namespace2.emit('click', 2)
-namespace2.one('click', function(a) {
+namespace2.once('click', function(a) {
   console.log(a) // 输出：2
 })
-namespace2.remove('click')
-namespace2.emit('click', 22)
+namespace2.emit('click', 12222)
+namespace2.off('click')
+namespace2.emit('click', 1222)

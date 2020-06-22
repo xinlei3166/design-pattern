@@ -1,32 +1,16 @@
-var Iterator = function(obj) {
-  var current = 0
-  var next = function() {
-    current += 1
-  }
-  var isDone = function() {
-    return current >= obj.length
-  }
-  var getCurrItem = function() {
-    return obj[current]
-  }
-  return {
-    next,
-    isDone,
-    getCurrItem
-  }
+// 定义生成器函数，入参是任意集合
+function iteratorGenerator(list) {
+    var idx = 0;
+    var len = list.length;
+    return {
+        next: function () {
+            var done = idx >= len;
+            var value = !done ? list[idx++] : undefined;
+            return { done: done, value: value };
+        }
+    };
 }
-
-var compare = function(iterator1, iterator2) {
-  while (!iterator1.isDone() && !iterator2.isDone()) {
-    if (iterator1.getCurrItem() !== iterator2.getCurrItem()) {
-      throw new Error('iterator1 和 iterator2 不相等')
-    }
-    iterator1.next()
-    iterator2.next()
-  }
-  console.log('iterator1 和 iterator2 相等')
-}
-
-var iterator1 = Iterator([1, 2, 3])
-var iterator2 = Iterator([1, 2, 3])
-compare(iterator1, iterator2)
+var iterator = iteratorGenerator(['1号选手', '2号选手', '3号选手']);
+console.log(iterator.next());
+console.log(iterator.next());
+console.log(iterator.next());
