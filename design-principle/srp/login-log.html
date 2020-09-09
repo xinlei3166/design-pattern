@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>登录数据上报</title>
+</head>
+<body>
+<button tag="login" id="button">点击打开登录浮层</button>
+<script>
+  Function.prototype.after = function(afterfn) {
+    const __self = this
+    return function() {
+      const ret = __self.apply(this, arguments)
+      afterfn.apply(this, arguments)
+      return ret
+    }
+  }
+  const showLogin = function() {
+    console.log('打开登录浮层')
+  }
+  const log = function() {
+    console.log('上报标签为: ' + this.getAttribute('tag'))
+  }
+  document.getElementById('button').onclick = showLogin.after(log) // 打开登录浮层之后上报数据
+</script>
+</body>
+</html>

@@ -1,16 +1,16 @@
-interface EventBase {
+interface IEventBase {
   emit: (key: string, ...args) => void,
   on: (key: string, cb: Function) => void,
   once: (key: string, cb: Function) => void,
   off: (key: string, cb?: Function) => void
 }
 
-interface EventIF extends EventBase {
+interface IEvent extends IEventBase {
   namespaceCache: object
   create: (namespace: string) => void
 }
 
-class Event1 implements EventIF {
+class Event1 implements IEvent {
   namespaceCache: object = {}
   private static instance: Event1
 
@@ -50,13 +50,13 @@ class Event1 implements EventIF {
   }
 }
 
-class Namespace implements EventBase {
-  private event: EventIF
+class Namespace implements IEventBase {
+  private event: IEvent
   private readonly namespace: string
   private subscribe: object = {}
   private offlineStack: Function[] = []
 
-  constructor(event: EventIF, namespace: string) {
+  constructor(event: IEvent, namespace: string) {
     this.event = event
     this.namespace = namespace
     return this.getInstance()

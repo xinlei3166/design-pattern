@@ -1,21 +1,21 @@
 type UploadType = 'plugin' | 'flash'
 
-interface FileIF {
+interface IFile {
   fileName: string,
   fileSize: number
 }
 
-interface UploadIF {
+interface IUpload {
   uploadType: UploadType,
   fileName: string,
   fileSize: number,
 
   init(): void,
 
-  setFile(file: FileIF): void
+  setFile(file: IFile): void
 }
 
-class Upload implements UploadIF {
+class Upload implements IUpload {
   uploadType: UploadType
   fileName: string
   fileSize: number
@@ -50,7 +50,7 @@ class Upload implements UploadIF {
     }
   }
 
-  setFile(file: FileIF) {
+  setFile(file: IFile) {
     const { fileName, fileSize } = file
     this.fileName = fileName
     this.fileSize = fileSize
@@ -61,7 +61,7 @@ class Upload implements UploadIF {
 class UploadFactory {
   private static createdFlyWeightObjs: object = {}
 
-  static create(uploadType: UploadType): UploadIF {
+  static create(uploadType: UploadType): IUpload {
     if (this.createdFlyWeightObjs[uploadType]) {
       return this.createdFlyWeightObjs[uploadType]
     }
@@ -70,7 +70,7 @@ class UploadFactory {
 }
 
 
-const startUpload = function(uploadType: UploadType, files: FileIF[]) {
+const startUpload = function(uploadType: UploadType, files: IFile[]) {
   for (let file of files) {
     const upload = UploadFactory.create(uploadType)
     upload.setFile(file)

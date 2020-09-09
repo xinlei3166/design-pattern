@@ -1,12 +1,13 @@
-//{
-//  "compilerOptions": {
+{
+  "compilerOptions": {
 //    "target": "esnext",
 //    "module": "esnext",
 //    "strict": true,
 //    "jsx": "preserve",
 //    "importHelpers": true,
 //    "moduleResolution": "node",
-//    "experimentalDecorators": true,
+    "experimentalDecorators": true
+//    "emitDecoratorMetadata": true
 //    "esModuleInterop": true,
 //    "allowSyntheticDefaultImports": true,
 //    "sourceMap": true,
@@ -26,7 +27,7 @@
 //      "dom.iterable",
 //      "scripthost"
 //    ]
-//  },
+  }
 //  "include": [
 //    "src/**/*.ts",
 //    "src/**/*.tsx",
@@ -37,4 +38,4 @@
 //  "exclude": [
 //    "node_modules"
 //  ]
-//}
+}
